@@ -6,5 +6,5 @@ cat <<EOF
 addons:
   - mongohq:sandbox
 default_process_types:
-  web: MONGO_URL=\$MONGOHQ_URL .meteor/heroku_build/bin/node .meteor/heroku_build/app/main.js
+  web: .meteor/heroku_build/bin/node .meteor/heroku_build/app/main.js
 EOF

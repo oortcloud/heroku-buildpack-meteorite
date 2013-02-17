@@ -12,10 +12,11 @@ Then `git push` to heroku as usual.
 
 ## NOTES
 
-You need to set the `ROOT_URL` environment variable:
+You need to set the `ROOT_URL` and `MONGO_URL` environment variables:
 
 ```bash
 heroku config:add ROOT_URL=your.domain.com
+heroku config:add MONGO_URL=mongodb://user:password@host:port/databasename
 ```
 
 You can specify meteor settings by setting the `METEOR_SETTINGS` environment variable:

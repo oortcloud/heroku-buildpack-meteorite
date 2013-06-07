@@ -45,7 +45,7 @@ function indent() {
 function run_npm() {
   command="$1"
 
-  cd $BUILD_DIR
+  cd "$BUILD_DIR"
   HOME="$BUILD_DIR" $VENDORED_NODE/bin/node $VENDORED_NODE/bin/npm $command 2>&1 | indent
 
   if [ "${PIPESTATUS[*]}" != "0 0" ]; then
@@ -162,6 +162,7 @@ export CPPPATH="$INCLUDE_PATH"
 # install meteorite
 ############################################
 echo "-----> Installing meteorite with npm"
+
 run_npm "install meteorite -g"
 echo "Meteorite installed" | indent
 
@@ -173,23 +174,30 @@ mkdir -p "$HOME"
 ############################################
 cd $BUILD_DIR
 echo "Installing meteor" | indent
+
+# Using different folder to prevent install script form deleting packages file
+VENDORED_METEOR="$(mktmpdir meteor)"
+curl https://install.meteor.com | HOME="$VENDORED_METEOR" /bin/sh | indent
+echo "Meteor installed" | indent
+
+echo "Installing packages" | indent
 HOME="$BUILD_DIR" mrt install | indent
 echo "Building meteor bundle" | indent
-HOME="$BUILD_DIR" mrt bundle $CACHE_DIR/bundle.tar.gz 2>&1 | indent
-echo "Bundled" | indent
-mkdir -p $METEOR_BUILD_DIR/app
-tar -zxf $CACHE_DIR/bundle.tar.gz --strip-components 1 -C $METEOR_BUILD_DIR/app
-rm $CACHE_DIR/bundle.tar.gz
+HOME="$VENDORED_METEOR" "$VENDORED_METEOR"/.meteor/meteor bundle "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
+
+mkdir -p "$METEOR_BUILD_DIR"/app
+tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
+rm "$CACHE_DIR"/bundle.tar.gz
 ############################################
 
 ############################################
 # Prepare ENV vars
 ############################################
 echo "Setting up MONGO_URL in .profile.d"
-mkdir -p $BUILD_DIR/.profile.d
-cat > $BUILD_DIR/.profile.d/mongo.sh <<EOF
+mkdir -p "$BUILD_DIR"/.profile.d
+cat > "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
   #!/bin/sh
-  
+
   export MONGO_URL=\${MONGO_URL:-\$MONGOHQ_URL};
 EOF
 

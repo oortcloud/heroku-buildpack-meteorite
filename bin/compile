@@ -120,6 +120,13 @@ echo "Meteor installed" | indent
 
 echo "Installing packages" | indent
 HOME="$BUILD_DIR" mrt install | indent
+
+echo "Installing bower" | indent
+run_npm "install bower -g"
+echo "Bower installed" | indent
+echo "Installing bower dependencies" | indent
+HOME="$BUILD_DIR" bower install |indent
+
 echo "Building meteor bundle" | indent
 HOME="$VENDORED_METEOR" "$VENDORED_METEOR"/.meteor/meteor bundle "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 

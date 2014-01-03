@@ -70,7 +70,7 @@ echo "-----> Resolving engine versions"
 requested_node_ver=""
 # add a warning if no version of node specified
 if [ "${requested_node_ver}" == "" ]; then
-  requested_node_ver="stable"
+  requested_node_ver="0.10.22"
   echo
   echo "No version of Node.js specified in package.json, using latest stable, see:" | indent
   echo "https://devcenter.heroku.com/articles/nodejs-versions" | indent

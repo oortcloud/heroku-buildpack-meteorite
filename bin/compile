@@ -61,6 +61,16 @@ function package_download() {
   curl $package -s -o - | tar -zxf  - -C $location --strip 1
 }
 
+function fix_npm_cert() {
+  dir="$1"
+  # Handle npm's new cert bug
+  # http://blog.npmjs.org/post/78085451721/npms-self-signed-certificate-is-no-more
+  if [ ! -f "$dir/.npmrc" ]; then
+    echo "Writing a custom .npmrc to circumvent npm bugs"
+    echo "ca=" > "$dir/.npmrc"
+  fi
+}
+
 echo "-----> Resolving engine versions"
 
 #TODO: Fix package.json loading
@@ -100,6 +110,8 @@ export npm_config_prefix="$VENDORED_MODULES"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 
+fix_npm_cert "$BUILD_DIR"
+
 
 ############################################
 # install meteorite
@@ -122,6 +134,8 @@ echo "Installing meteor" | indent
 VENDORED_METEOR="$(mktmpdir meteor)"
 curl https://install.meteor.com | HOME="$VENDORED_METEOR" /bin/sh | indent
 echo "Meteor installed" | indent
+
+fix_npm_cert "$VENDORED_METEOR"
 
 echo "Installing packages" | indent
 HOME="$BUILD_DIR" mrt install | indent

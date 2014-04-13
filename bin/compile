@@ -137,6 +137,9 @@ echo "Building meteor bundle" | indent
 
 #HOME="$VENDORED_METEOR" "$VENDORED_METEOR"/.meteor/meteor bundle "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 
+echo "Running ${BUILD_DIR}"
+echo "Running in ${$CACHE_DIR}"
+
 HOME="$BUILD_DIR" "demeteorizer --tarball" "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 
 mkdir -p "$METEOR_BUILD_DIR"/app

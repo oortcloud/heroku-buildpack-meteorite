@@ -138,10 +138,20 @@ npm install demeteorizer -g
 echo "Demeteorizer installed" | indent
 
 cd $BUILD_DIR
+
+echo "Creating NodeJS bundle"
 HOME="$VENDORED_METEOR" demeteorizer --tarball "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
+echo "NodeJS bundle created" | indent
 
 mkdir -p "$METEOR_BUILD_DIR"/app
 #tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
+
+echo "Installing npm modules"
+cd "$METEOR_BUILD_DIR"/app
+npm install
+echo "Package ready" | indent
+
+
 tar -zxf "$CACHE_DIR"/bundle.tar.gz -C "$METEOR_BUILD_DIR"/app
 rm "$CACHE_DIR"/bundle.tar.gz
 ############################################

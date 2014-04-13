@@ -134,10 +134,11 @@ echo "Building meteor bundle" | indent
 ############################################
 echo "-----> Installing demeteorizer with npm"
 
-run_npm "install demeteorizer -g"
+npm install demeteorizer -g
 echo "Demeteorizer installed" | indent
 
-HOME="$BUILD_DIR" "demeteorizer --tarball" "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
+cd $BUILD_DIR
+demeteorizer --tarball "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 
 mkdir -p "$METEOR_BUILD_DIR"/app
 #tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app

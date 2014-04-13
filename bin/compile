@@ -147,8 +147,12 @@ mkdir -p "$METEOR_BUILD_DIR"/app
 #tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
 
 echo "Installing npm modules"
-cd "$METEOR_BUILD_DIR"/app
+
+
+cd $METEOR_BUILD_DIR
+cd app
 npm install
+
 echo "Package ready" | indent
 
 

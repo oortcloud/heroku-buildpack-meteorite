@@ -109,14 +109,6 @@ echo "-----> Installing meteorite with npm"
 run_npm "install meteorite -g"
 echo "Meteorite installed" | indent
 
-############################################
-# install demeteorizer
-############################################
-echo "-----> Installing demeteorizer with npm"
-
-run_npm "install demeteorizer -g"
-echo "Demeteorizer installed" | indent
-
 METEOR_BUILD_DIR="$BUILD_DIR/.meteor/heroku_build"
 mkdir -p "$HOME"
 ############################################
@@ -139,6 +131,14 @@ echo "Building meteor bundle" | indent
 
 echo "Running ${BUILD_DIR}"
 echo "Running in ${$CACHE_DIR}"
+
+############################################
+# install demeteorizer
+############################################
+echo "-----> Installing demeteorizer with npm"
+
+run_npm "install demeteorizer -g"
+echo "Demeteorizer installed" | indent
 
 HOME="$BUILD_DIR" "demeteorizer --tarball" "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 

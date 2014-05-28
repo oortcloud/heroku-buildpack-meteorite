@@ -82,7 +82,9 @@ if [ "$requested_node_ver" == "" ]; then
   echo
 fi
 
-NODE_VERSION=$(curl --silent --get --data-urlencode "range=${requested_node_ver}" https://semver.io/node/resolve)
+# samver.io can't be trusted, see https://github.com/oortcloud/heroku-buildpack-meteorite/issues/43
+# NODE_VERSION=$(curl --silent --get --data-urlencode "range=${requested_node_ver}" https://semver.io/node/resolve)
+NODE_VERSION=${requested_node_ver}
 echo "Using Node.js version: ${NODE_VERSION}" | indent
 
 # vendor directories

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+# This script is invoked by [`bin/compile`](/).
+
+# The location of the pre-compiled binary.
+VENDORED_FONTFORGE="https://s3.amazonaws.com/karmanotes-buildpack/fontforge-20120731-b-karmanotes-heroku.tar.gz"
+
+# Syntax sugar.
+source $BIN_DIR/utils
+
+# Download and extract fontforge into target vendor directory.
+pushd /app > /dev/null
+echo "-----> Downloading prebuilt fontforge"
+curl -s -L -o tmp-fontforge.tar.gz $VENDORED_FONTFORGE
+echo "-----> Unpacked fontforge"
+tar -zxf tmp-fontforge.tar.gz
+rm tmp-fontforge.tar.gz
+popd > /dev/null
+

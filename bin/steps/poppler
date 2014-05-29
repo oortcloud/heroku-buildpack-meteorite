@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# This script is invoked by [`bin/compile`](/).
+
+# The location of the pre-compiled binary.
+VENDORED_POPPLER="https://s3.amazonaws.com/karmanotes-buildpack/poppler-0.26.0-karmanotes-heroku.tar.gz"
+
+# Syntax sugar.
+source $BIN_DIR/utils
+
+# Download and extract poppler into target vendor directory.
+pushd /app > /dev/null
+echo "-----> Downloading prebuilt poppler"
+curl -s -L -o tmp-poppler.tar.gz $VENDORED_POPPLER
+echo "-----> Unpacked poppler"
+tar -zxf tmp-poppler.tar.gz
+rm tmp-poppler.tar.gz
+popd > /dev/null

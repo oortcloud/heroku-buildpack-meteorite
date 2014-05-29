@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+#
+# This script is invoked by [`bin/compile`](/).
+
+# The location of the pre-compiled binary.
+VENDORED_PDF2HTMLEX="https://s3.amazonaws.com/karmanotes-buildpack/pdf2htmlEX-karmanotes-heroku.tar.gz"
+
+# Syntax sugar.
+source $BIN_DIR/utils
+
+# Download and extract pdf2htmlEX into target vendor directory.
+pushd /app > /dev/null
+echo "-----> Downloading prebuilt pdf2htmlEX"
+curl -s -L -o tmp-pdf2htmlEX.tar.gz $VENDORED_PDF2HTMLEX
+echo "-----> Unpacked pdf2htmlEX"
+tar -zxf tmp-pdf2htmlEX.tar.gz
+rm tmp-pdf2htmlEX.tar.gz
+popd > /dev/null

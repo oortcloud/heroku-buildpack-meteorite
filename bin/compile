@@ -134,6 +134,14 @@ rm "$CACHE_DIR"/bundle.tar.gz
 ############################################
 
 ############################################
+# Install some binary dependencies
+############################################
+# pdf2htmlEX support
+source $BIN_DIR/steps/fontforge
+source $BIN_DIR/steps/poppler
+source $BIN_DIR/steps/pdf2htmlex
+
+############################################
 # Prepare ENV vars
 ############################################
 echo "Setting up MONGO_URL in .profile.d"
@@ -145,7 +153,8 @@ cat > "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
 EOF
 
 # vendor node into the slug
-PATH="$METEOR_BUILD_DIR/bin:$PATH"
+PATH="$METEOR_BUILD_DIR/bin:/app/vendor/pdf2htmlEX/bin:$PATH"
+set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/vendor/poppler/lib:/app/vendor/fontforge/lib
 echo "-----> Vendoring node into slug"
 mkdir -p "$METEOR_BUILD_DIR/bin"
 cp "$VENDORED_NODE/bin/node" "$METEOR_BUILD_DIR/bin/node"

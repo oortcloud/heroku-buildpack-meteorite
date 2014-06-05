@@ -155,7 +155,7 @@ EOF
 
 # vendor node into the slug
 PATH="$METEOR_BUILD_DIR/bin:/app/vendor/pdf2htmlEX/bin:$PATH"
-set-default-env LD_LIBRARY_PATH /app/.heroku/vendor/lib:/app/vendor/poppler/lib:/app/vendor/fontforge/lib
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/.heroku/vendor/lib:/app/vendor/poppler/lib:/app/vendor/fontforge/lib"
 echo "-----> Vendoring node into slug"
 mkdir -p "$METEOR_BUILD_DIR/bin"
 cp "$VENDORED_NODE/bin/node" "$METEOR_BUILD_DIR/bin/node"

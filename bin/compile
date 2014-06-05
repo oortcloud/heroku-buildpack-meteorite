@@ -151,11 +151,13 @@ cat > "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
   #!/bin/sh
 
   export MONGO_URL=\${MONGO_URL:-\$MONGOHQ_URL};
+
+  export PATH="$METEOR_BUILD_DIR/bin:/app/vendor/pdf2htmlEX/bin:$PATH"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/.heroku/vendor/lib:/app/vendor/poppler/lib:/app/vendor/fontforge/lib"
+
 EOF
 
 # vendor node into the slug
-export PATH="$METEOR_BUILD_DIR/bin:/app/vendor/pdf2htmlEX/bin:$PATH"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/.heroku/vendor/lib:/app/vendor/poppler/lib:/app/vendor/fontforge/lib"
 echo "-----> Vendoring node into slug"
 mkdir -p "$METEOR_BUILD_DIR/bin"
 cp "$VENDORED_NODE/bin/node" "$METEOR_BUILD_DIR/bin/node"

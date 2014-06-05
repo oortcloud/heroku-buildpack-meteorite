@@ -5,9 +5,6 @@
 # The location of the pre-compiled binary.
 VENDORED_PDF2HTMLEX="https://s3.amazonaws.com/karmanotes-buildpack/pdf2htmlEX-karmanotes-heroku.tar.gz"
 
-# Syntax sugar.
-source $BIN_DIR/utils
-
 # Download and extract pdf2htmlEX into target vendor directory.
 pushd /app > /dev/null
 echo "-----> Downloading prebuilt pdf2htmlEX"

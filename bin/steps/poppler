@@ -6,7 +6,7 @@
 VENDORED_POPPLER="https://s3.amazonaws.com/karmanotes-buildpack/poppler-0.26.0-karmanotes-heroku.tar.gz"
 
 # Download and extract poppler into target vendor directory.
-pushd /app > /dev/null
+pushd $BUILD_DIR > /dev/null
 echo "-----> Downloading prebuilt poppler"
 curl -s -L -o tmp-poppler.tar.gz $VENDORED_POPPLER
 echo "-----> Unpacked poppler"

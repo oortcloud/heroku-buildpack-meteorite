@@ -6,7 +6,7 @@
 VENDORED_PDF2HTMLEX="https://s3.amazonaws.com/karmanotes-buildpack/pdf2htmlEX-karmanotes-heroku.tar.gz"
 
 # Download and extract pdf2htmlEX into target vendor directory.
-pushd /app > /dev/null
+pushd $BUILD_DIR > /dev/null
 echo "-----> Downloading prebuilt pdf2htmlEX"
 curl -s -L -o tmp-pdf2htmlEX.tar.gz $VENDORED_PDF2HTMLEX
 echo "-----> Unpacked pdf2htmlEX"

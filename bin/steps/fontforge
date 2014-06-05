@@ -6,7 +6,7 @@
 VENDORED_FONTFORGE="https://s3.amazonaws.com/karmanotes-buildpack/fontforge-20120731-b-karmanotes-heroku.tar.gz"
 
 # Download and extract fontforge into target vendor directory.
-pushd /app > /dev/null
+pushd $BUILD_DIR > /dev/null
 echo "-----> Downloading prebuilt fontforge"
 curl -s -L -o tmp-fontforge.tar.gz $VENDORED_FONTFORGE
 echo "-----> Unpacked fontforge"

@@ -9,6 +9,7 @@ set -e
 
 # clean up leaking environment
 unset GIT_DIR
+BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 
 # parse and derive params
 BUILD_DIR=$1

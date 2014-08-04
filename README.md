@@ -12,6 +12,8 @@ Then `git push` to heroku as usual.
 
 ## NOTES
 
+Meteor apps deployed to Heroku cannot use more than one dyno. Heroku's load balancer does not support sticky sessions.
+
 You need to set the `ROOT_URL` environment variable:
 
 ```bash
@@ -24,11 +26,10 @@ You can specify meteor settings by setting the `METEOR_SETTINGS` environment var
 heroku config:add METEOR_SETTINGS='{"herp":"derp"}'
 ```
 
-
 You need to have a verified account so the buildpack can add a `mongohq:sandbox` addon.
 
 ## Websockets
 
-To enable websockets on Heroku, you will need to enable the "labs" feature:
+Websockets, as of July 7th, are enabled on all new apps deployed on Heroku. For apps deployed before then, run the command:
 
 ```heroku labs:enable websockets```

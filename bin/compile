@@ -14,6 +14,7 @@ BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
+METEOR_BUILD_DIR=$BUILD_DIR
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 [ ! -d $BUILD_DIR ] && mkdir $BUILD_DIR

@@ -120,11 +120,13 @@ echo "Installing packages" | indent
 set -x
 
 METEOR="$VENDORED_METEOR"/.meteor/meteor
-HOME="$BUILD_DIR" $METEOR remove npm-container | indent # remove npm-container first.
-HOME="$BUILD_DIR" $METEOR | indent # now initialize npm stuff.
-HOME="$BUILD_DIR" $METEOR | indent # now run meteor for realz.
+
+cd $BUILD_DIR
+$METEOR remove npm-container | indent # remove npm-container first.
+$METEOR | indent # now initialize npm stuff.
+$METEOR | indent # now run meteor for realz.
 echo "Building meteor bundle" | indent
-HOME="$VENDORED_METEOR" $METEOR build "$CACHE_DIR"/bundle.tar.gz | indent
+$METEOR build "$CACHE_DIR"/bundle.tar.gz | indent
 
 mkdir -p "$METEOR_BUILD_DIR"/app
 tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app

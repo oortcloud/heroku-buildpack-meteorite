@@ -117,13 +117,14 @@ echo "Meteor installed" | indent
 echo "Installing packages" | indent
 # Allow an error for a moment.
 set +e
-HOME="$BUILD_DIR" meteor | indent # notice that npm-container is a package
+METEOR="$VENDORED_METEOR"/.meteor/meteor
+HOME="$BUILD_DIR" $METEOR | indent # notice that npm-container is a package
 # Done?? Return to disallowing errors.
 set -e
-HOME="$BUILD_DIR" meteor remove npm-container | indent # now remove it
-HOME="$BUILD_DIR" meteor | indent # now initialize npm stuff.
-echo "Building meteor build" | indent
-HOME="$VENDORED_METEOR" "$VENDORED_METEOR"/.meteor/meteor bundle "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
+HOME="$BUILD_DIR" $METEOR remove npm-container | indent # now remove it
+HOME="$BUILD_DIR" $METEOR | indent # now initialize npm stuff.
+echo "Building meteor bundle" | indent
+HOME="$VENDORED_METEOR" $METEOR build "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 
 mkdir -p "$METEOR_BUILD_DIR"/app
 tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app

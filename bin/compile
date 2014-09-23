@@ -116,9 +116,6 @@ echo "Meteor installed" | indent
 
 echo "Installing packages" | indent
 
-# Turn on verbosity
-set -x
-
 METEOR="$VENDORED_METEOR"/.meteor/meteor
 
 cd $BUILD_DIR
@@ -128,9 +125,6 @@ echo "Building meteor bundle" | indent
 $METEOR build "$CACHE_DIR"/bundle --directory | indent
 
 mv "$CACHE_DIR"/bundle/bundle "$METEOR_BUILD_DIR"/app
-
-# Turn off verbosity
-set +x
 ############################################
 
 ############################################
@@ -157,6 +151,7 @@ cat > "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
 EOF
 
 # vendor node into the slug
+set -x
 echo "-----> Vendoring node into slug"
 mkdir -p "$METEOR_BUILD_DIR/bin"
 cp "$VENDORED_NODE/bin/node" "$METEOR_BUILD_DIR/bin/node"

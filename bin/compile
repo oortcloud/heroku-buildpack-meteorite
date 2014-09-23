@@ -124,7 +124,6 @@ METEOR="$VENDORED_METEOR"/.meteor/meteor
 cd $BUILD_DIR
 $METEOR remove npm-container | indent # remove npm-container first.
 $METEOR | indent # now initialize npm stuff.
-$METEOR | indent # now run meteor for realz.
 echo "Building meteor bundle" | indent
 $METEOR build "$CACHE_DIR"/bundle.tar.gz | indent
 

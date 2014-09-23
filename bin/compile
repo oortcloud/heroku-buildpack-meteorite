@@ -115,8 +115,13 @@ curl https://install.meteor.com | HOME="$VENDORED_METEOR" /bin/sh | indent
 echo "Meteor installed" | indent
 
 echo "Installing packages" | indent
-HOME="$BUILD_DIR" meteor remove npm-container | indent
-HOME="$BUILD_DIR" meteor update | indent
+# Allow an error for a moment.
+set +e
+HOME="$BUILD_DIR" meteor | indent # notice that npm-container is a package
+# Done?? Return to disallowing errors.
+set -e
+HOME="$BUILD_DIR" meteor remove npm-container | indent # now remove it
+HOME="$BUILD_DIR" meteor | indent # now initialize npm stuff.
 echo "Building meteor build" | indent
 HOME="$VENDORED_METEOR" "$VENDORED_METEOR"/.meteor/meteor bundle "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 

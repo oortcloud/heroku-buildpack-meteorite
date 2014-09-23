@@ -123,6 +123,7 @@ HOME="$BUILD_DIR" $METEOR | indent # notice that npm-container is a package
 set -e
 HOME="$BUILD_DIR" $METEOR remove npm-container | indent # now remove it
 HOME="$BUILD_DIR" $METEOR | indent # now initialize npm stuff.
+HOME="$BUILD_DIR" $METEOR | indent # now run meteor for realz.
 echo "Building meteor bundle" | indent
 HOME="$VENDORED_METEOR" $METEOR build "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 

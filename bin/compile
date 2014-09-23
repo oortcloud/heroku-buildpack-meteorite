@@ -107,7 +107,7 @@ export CPPPATH="$INCLUDE_PATH"
 # bundle, and install into app/
 ############################################
 cd $BUILD_DIR
-echo "Installing meteor" | indent
+echo "Installing meteor. BUILD_DIR: $BUILD_DIR" | indent
 
 # Using different folder to prevent install script form deleting packages file
 VENDORED_METEOR="$(mktmpdir meteor)"
@@ -115,14 +115,12 @@ curl https://install.meteor.com | HOME="$VENDORED_METEOR" /bin/sh | indent
 echo "Meteor installed" | indent
 
 echo "Installing packages" | indent
-# Allow an error for a moment.
-set +e
+
+# Turn on verbosity
 set -x
+
 METEOR="$VENDORED_METEOR"/.meteor/meteor
-HOME="$BUILD_DIR" $METEOR | indent # notice that npm-container is a package
-# Done?? Return to disallowing errors.
-set -e
-HOME="$BUILD_DIR" $METEOR remove npm-container | indent # now remove it
+HOME="$BUILD_DIR" $METEOR remove npm-container | indent # remove npm-container first.
 HOME="$BUILD_DIR" $METEOR | indent # now initialize npm stuff.
 HOME="$BUILD_DIR" $METEOR | indent # now run meteor for realz.
 echo "Building meteor bundle" | indent
@@ -132,6 +130,7 @@ mkdir -p "$METEOR_BUILD_DIR"/app
 tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
 rm "$CACHE_DIR"/bundle.tar.gz
 
+# Turn off verbosity
 set +x
 ############################################
 

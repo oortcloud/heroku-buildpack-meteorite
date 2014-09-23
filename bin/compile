@@ -117,6 +117,7 @@ echo "Meteor installed" | indent
 echo "Installing packages" | indent
 # Allow an error for a moment.
 set +e
+set -x
 METEOR="$VENDORED_METEOR"/.meteor/meteor
 HOME="$BUILD_DIR" $METEOR | indent # notice that npm-container is a package
 # Done?? Return to disallowing errors.
@@ -130,6 +131,8 @@ HOME="$VENDORED_METEOR" $METEOR build "$CACHE_DIR"/bundle.tar.gz | indent
 mkdir -p "$METEOR_BUILD_DIR"/app
 tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
 rm "$CACHE_DIR"/bundle.tar.gz
+
+set +x
 ############################################
 
 ############################################

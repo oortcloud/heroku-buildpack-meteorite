@@ -125,11 +125,9 @@ cd $BUILD_DIR
 $METEOR remove npm-container | indent # remove npm-container first.
 $METEOR | indent # now initialize npm stuff.
 echo "Building meteor bundle" | indent
-$METEOR build "$CACHE_DIR"/bundle | indent
+$METEOR build "$CACHE_DIR"/bundle --directory | indent
 
-mkdir -p "$METEOR_BUILD_DIR"/app
-tar -zxf "$CACHE_DIR"/bundle/Admit.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
-rm "$CACHE_DIR"/bundle.tar.gz
+mv "$CACHE_DIR"/bundle/bundle "$METEOR_BUILD_DIR"/app
 
 # Turn off verbosity
 set +x

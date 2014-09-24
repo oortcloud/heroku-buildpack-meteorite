@@ -9,10 +9,12 @@ set -e
 
 # clean up leaking environment
 unset GIT_DIR
+BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 
 # parse and derive params
 BUILD_DIR=$1
 CACHE_DIR=$2
+METEOR_BUILD_DIR=$BUILD_DIR
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
 
 [ ! -d $BUILD_DIR ] && mkdir $BUILD_DIR
@@ -102,21 +104,11 @@ export CPPPATH="$INCLUDE_PATH"
 
 
 ############################################
-# install meteorite
-############################################
-echo "-----> Installing meteorite with npm"
-
-run_npm "install meteorite -g"
-echo "Meteorite installed" | indent
-
-METEOR_BUILD_DIR="$BUILD_DIR/.meteor/heroku_build"
-mkdir -p "$HOME"
-############################################
-# install meteor + packages through mrt
+# install meteor + packages
 # bundle, and install into app/
 ############################################
 cd $BUILD_DIR
-echo "Installing meteor" | indent
+echo "Installing meteor. BUILD_DIR: $BUILD_DIR" | indent
 
 # Using different folder to prevent install script form deleting packages file
 VENDORED_METEOR="$(mktmpdir meteor)"
@@ -124,14 +116,25 @@ curl https://install.meteor.com | HOME="$VENDORED_METEOR" /bin/sh | indent
 echo "Meteor installed" | indent
 
 echo "Installing packages" | indent
-HOME="$BUILD_DIR" mrt install --force | indent
-echo "Building meteor bundle" | indent
-HOME="$VENDORED_METEOR" "$VENDORED_METEOR"/.meteor/meteor bundle "$CACHE_DIR"/bundle.tar.gz 2>&1 | indent
 
-mkdir -p "$METEOR_BUILD_DIR"/app
-tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/app
-rm "$CACHE_DIR"/bundle.tar.gz
+METEOR="$VENDORED_METEOR"/.meteor/meteor
+
+cd $BUILD_DIR
+$METEOR remove npm-container | indent # remove npm-container first.
+$METEOR | indent # now initialize npm stuff.
+echo "Building meteor bundle" | indent
+$METEOR build "$CACHE_DIR"/bundle --directory | indent
+
+mv "$CACHE_DIR"/bundle/bundle "$METEOR_BUILD_DIR"/app
 ############################################
+
+############################################
+# Install some binary dependencies
+############################################
+# pdf2htmlEX support
+source $BIN_DIR/steps/fontforge
+source $BIN_DIR/steps/poppler
+source $BIN_DIR/steps/pdf2htmlex
 
 ############################################
 # Prepare ENV vars
@@ -142,10 +145,13 @@ cat > "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
   #!/bin/sh
 
   export MONGO_URL=\${MONGO_URL:-\$MONGOHQ_URL};
+
+  export PATH="$METEOR_BUILD_DIR/bin:/app/vendor/pdf2htmlEX/bin:$PATH"
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/app/.heroku/vendor/lib:/app/vendor/poppler/lib:/app/vendor/fontforge/lib"
+
 EOF
 
 # vendor node into the slug
-PATH="$METEOR_BUILD_DIR/bin:$PATH"
 echo "-----> Vendoring node into slug"
 mkdir -p "$METEOR_BUILD_DIR/bin"
 cp "$VENDORED_NODE/bin/node" "$METEOR_BUILD_DIR/bin/node"

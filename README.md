@@ -1,3 +1,10 @@
+> **For Meteor 0.9.x users**
+>
+> Please use https://github.com/AdmitHub/meteor-buildpack-horse
+> 
+> If you need automatic MAIL_GUN integration, use my fork or the previous buildpack:
+> https://github.com/djhi/meteor-buildpack-horse
+
 # Heroku buildpack: Meteorite
 
 This build pack allows you to easily deploy meteor apps to heroku using [meteorite](http://github.com/oortcloud/meteorite). It's easy to use different branches of meteor and any smart package you can lay your hands on.

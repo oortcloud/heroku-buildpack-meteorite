@@ -1,3 +1,10 @@
+> **For Meteor 0.9.x users**
+>
+> Please use https://github.com/AdmitHub/meteor-buildpack-horse
+> 
+> If you need automatic MAIL_GUN integration, use my fork or the previous buildpack:
+> https://github.com/djhi/meteor-buildpack-horse
+
 # Heroku buildpack: Meteorite
 
 **Meteorite is no longer used as of Meteor > 1.0. There are other buildpacks that support Meteor 1.0.**

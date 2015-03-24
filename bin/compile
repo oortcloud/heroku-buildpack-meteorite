@@ -14,6 +14,7 @@ unset GIT_DIR
 BUILD_DIR=$1
 CACHE_DIR=$2
 LP_DIR=`cd $(dirname $0); cd ..; pwd`
+BUILDPACK_DIR="$(dirname $(dirname $0))"
 
 [ ! -d $BUILD_DIR ] && mkdir $BUILD_DIR
 [ ! -d $CACHE_DIR ] && mkdir $CACHE_DIR
@@ -100,13 +101,12 @@ export npm_config_prefix="$VENDORED_MODULES"
 export CPATH="$INCLUDE_PATH"
 export CPPPATH="$INCLUDE_PATH"
 
-
 ############################################
 # install meteorite
 ############################################
 echo "-----> Installing meteorite with npm"
 
-run_npm "install meteorite -g"
+run_npm "install meteorite fibers -g"
 echo "Meteorite installed" | indent
 
 METEOR_BUILD_DIR="$BUILD_DIR/.meteor/heroku_build"
@@ -133,19 +133,20 @@ tar -zxf "$CACHE_DIR"/bundle.tar.gz --strip-components 1 -C "$METEOR_BUILD_DIR"/
 rm "$CACHE_DIR"/bundle.tar.gz
 ############################################
 
-############################################
-# Prepare ENV vars
-############################################
-echo "Setting up MONGO_URL in .profile.d"
-mkdir -p "$BUILD_DIR"/.profile.d
-cat > "$BUILD_DIR"/.profile.d/mongo.sh <<EOF
-  #!/bin/sh
-
-  export MONGO_URL=\${MONGO_URL:-\$MONGOHQ_URL};
-EOF
-
 # vendor node into the slug
 PATH="$METEOR_BUILD_DIR/bin:$PATH"
 echo "-----> Vendoring node into slug"
 mkdir -p "$METEOR_BUILD_DIR/bin"
 cp "$VENDORED_NODE/bin/node" "$METEOR_BUILD_DIR/bin/node"
+
+echo "-----> Move to app directory: /programs/server"
+cd "$METEOR_BUILD_DIR"/app/programs/server
+
+echo "-----> Run npm install"
+npm install
+
+# copy over environment
+echo "-----> Copy over environment profile.d scripts"
+mkdir -p $BUILD_DIR/.profile.d
+cp "$BUILDPACK_DIR/mongo.sh" $BUILD_DIR/.profile.d/mongo.sh
+cp "$BUILDPACK_DIR/mailgun.sh" $BUILD_DIR/.profile.d/mailgun.sh
